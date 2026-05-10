@@ -1,23 +1,57 @@
 import React from "react";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
-import { BiLinkExternal } from "react-icons/bi";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-function ProjectCards(props) {
+function ProjectCard({ slug, title, description, tech, img, icon, accent, index }) {
   return (
-    <Card className="project-card-view">
-      <Card.Img variant="top" src={props.imgPath} alt="card-img" />
-      <Card.Body>
-        <Card.Title>{props.title}</Card.Title>
-        <Card.Text style={{ textAlign: "justify" }}>
-          {props.description}
-        </Card.Text>
-        <Button variant="primary" href={props.link} target="_blank">
-          <BiLinkExternal /> &nbsp;
-          {props.isBlog ? "View Blog" : "View Project"}
-        </Button>
-      </Card.Body>
-    </Card>
+    <motion.article
+      className="project-card"
+      initial={{ opacity: 0, y: 48 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.75, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
+    >
+      <Link
+        to={`/project/${slug}`}
+        className="project-card-inner"
+        style={{ display: "block", textDecoration: "none" }}
+        data-cursor
+      >
+        <div className="card-img-wrapper">
+          {img ? (
+            <>
+              <img src={img} alt={title} className="card-img" />
+              <div className="card-img-overlay" aria-hidden="true" />
+            </>
+          ) : (
+            <div className="card-img-placeholder" aria-hidden="true">
+              <div className="card-placeholder-icon" style={{ borderColor: `${accent}40` }}>
+                {icon}
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="card-body">
+          {tech && (
+            <div className="card-tech">
+              {tech.slice(0, 4).map((t) => (
+                <span key={t} className="tech-badge">{t}</span>
+              ))}
+              {tech.length > 4 && (
+                <span className="tech-badge">+{tech.length - 4}</span>
+              )}
+            </div>
+          )}
+          <h3 className="card-title">{title}</h3>
+          <p className="card-desc">{description}</p>
+          <span className="card-link" style={{ color: accent || "var(--cyan)" }}>
+            View Case Study →
+          </span>
+        </div>
+      </Link>
+    </motion.article>
   );
 }
-export default ProjectCards;
+
+export default ProjectCard;

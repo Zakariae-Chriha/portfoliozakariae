@@ -1,34 +1,44 @@
 import React from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { motion } from "framer-motion";
 import ProjectCard from "./ProjectCards";
-import Particle from "./Particle ";
-import book from "../Assets/book.jpg";
+import { PROJECTS } from "../data/projects";
 
 function Projects() {
   return (
-    <Container fluid className="project-section">
-      <Particle />
-      <Container>
-        <h1 className="project-heading">
-          My Recent <strong className="purple">Works </strong>
-        </h1>
-        <p style={{ color: "white" }}>
-          Here are a few projects I've worked on recently.
+    <section className="projects-section" id="projects">
+      <div className="section-inner">
+        <motion.div
+          className="section-label"
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="label-line" />
+          Projects
+        </motion.div>
+
+        <motion.h2
+          className="section-title"
+          initial={{ opacity: 0, y: 32 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
+        >
+          Recent <span className="accent-cyan">Works</span>
+        </motion.h2>
+
+        <p className="section-sub">
+          {PROJECTS.length} projects built and shipped — click any card to explore.
         </p>
-        <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={book}
-              isBlog={false}
-              title="BookCommunity"
-              description="Read Book for free .Give away or sale the  Book.
-               buil with react.js, Material-UI,Node.js. "
-              link="https://bookcommunity.netlify.app/"
-            />
-          </Col>
-        </Row>
-      </Container>
-    </Container>
+
+        <div className="projects-grid">
+          {PROJECTS.map((project, i) => (
+            <ProjectCard key={project.slug} {...project} index={i} />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
